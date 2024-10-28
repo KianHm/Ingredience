@@ -1,3 +1,4 @@
+// Khanh Van | kxv230013 | Item Class for each Items in the program
 import java.util.Date;
 import java.util.Scanner;
 
