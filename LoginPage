@@ -1,0 +1,299 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+class UserAccount {
+    private String name;
+    private String email;
+    private String password;
+
+    public UserAccount(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+}
+
+
+public class LoginPage {
+
+    private JFrame frame;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private HashMap<String, UserAccount> users = new HashMap<>();
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(LoginPage::new);
+    }
+
+    public LoginPage() {
+        createLoginPage();
+    }
+
+    private void createLoginPage() {
+        frame = new JFrame("Login");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(350, 500);
+        frame.setLayout(new BorderLayout());
+
+        // Panel for header with icon and title
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+        headerPanel.setBackground(Color.LIGHT_GRAY);
+
+        // Load the image icon from the file path
+        JLabel iconLabel = new JLabel();
+        try {
+            ImageIcon icon = new ImageIcon("path_to_icon.png"); // Add correct path to your icon
+            Image scaledIcon = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+            iconLabel.setIcon(new ImageIcon(scaledIcon));
+        } catch (Exception e) {
+            System.out.println("Image not found.");
+        }
+
+        iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel titleLabel = new JLabel("Login");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 30));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        headerPanel.add(Box.createVerticalStrut(20));
+        headerPanel.add(iconLabel);
+        headerPanel.add(Box.createVerticalStrut(10));
+        headerPanel.add(titleLabel);
+        headerPanel.add(Box.createVerticalStrut(20));
+
+        // Panel for input fields
+        JPanel fieldsPanel = new JPanel();
+        fieldsPanel.setLayout(new BoxLayout(fieldsPanel, BoxLayout.Y_AXIS));
+        fieldsPanel.setBackground(Color.WHITE);
+        fieldsPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40)); // Add padding for centering
+
+        Color fieldColor = new Color(220, 220, 220); // Slightly darker shade than background
+
+        usernameField = new JTextField("Enter email");
+        usernameField.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        usernameField.setForeground(Color.GRAY);
+        usernameField.setBackground(fieldColor);
+        usernameField.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        fieldsPanel.add(usernameField);
+
+        fieldsPanel.add(Box.createVerticalStrut(15));
+
+        passwordField = new JPasswordField("Enter Password");
+        passwordField.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        passwordField.setForeground(Color.GRAY);
+        passwordField.setBackground(fieldColor);
+        passwordField.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        fieldsPanel.add(passwordField);
+
+        fieldsPanel.add(Box.createVerticalStrut(30));
+
+        // Login button styling
+        JButton loginButton = new JButton("Login →");
+        loginButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        loginButton.setBackground(new Color(70, 70, 70)); // Dark gray button color
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setFocusPainted(false);
+        loginButton.setPreferredSize(new Dimension(150, 40));
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button
+
+        loginButton.addActionListener(new LoginAction());
+
+        fieldsPanel.add(loginButton);
+        fieldsPanel.add(Box.createVerticalStrut(20));
+
+        // Link to create a new account
+        JLabel createAccountLabel = new JLabel("<HTML><U>Create a new account</U></HTML>");
+        createAccountLabel.setForeground(Color.BLUE);
+        createAccountLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        createAccountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        createAccountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        createAccountLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                createAccountPage();
+            }
+        });
+
+        // Adding components to the frame
+        frame.add(headerPanel, BorderLayout.NORTH);
+        frame.add(fieldsPanel, BorderLayout.CENTER);
+        frame.add(createAccountLabel, BorderLayout.PAGE_END);
+
+        frame.setVisible(true);
+    }
+
+    private void createAccountPage() {
+        JFrame accountFrame = new JFrame("Create Account");
+        accountFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        accountFrame.setSize(350, 500);
+        accountFrame.setLayout(new BorderLayout());
+
+        // Header section
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+        headerPanel.setBackground(Color.LIGHT_GRAY);
+
+        // Add header icon and title
+        JLabel iconLabel = new JLabel(new ImageIcon("path_to_icon.png")); // Replace with actual path
+        JLabel titleLabel = new JLabel("Create Account");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 30));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(iconLabel);
+        headerPanel.add(titleLabel);
+
+        // Fields for account creation
+        JPanel fieldsPanel = new JPanel();
+        fieldsPanel.setLayout(new BoxLayout(fieldsPanel, BoxLayout.Y_AXIS));
+        fieldsPanel.setBackground(Color.WHITE);
+        fieldsPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+
+        JTextField nameField = new JTextField();
+        JTextField emailField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        JPasswordField confirmPasswordField = new JPasswordField();
+
+        fieldsPanel.add(new JLabel("Name:"));
+        fieldsPanel.add(nameField);
+        fieldsPanel.add(Box.createVerticalStrut(10));
+
+        fieldsPanel.add(new JLabel("Email:"));
+        fieldsPanel.add(emailField);
+        fieldsPanel.add(Box.createVerticalStrut(10));
+
+        fieldsPanel.add(new JLabel("Password:"));
+        fieldsPanel.add(passwordField);
+        fieldsPanel.add(Box.createVerticalStrut(10));
+
+        fieldsPanel.add(new JLabel("Confirm Password:"));
+        fieldsPanel.add(confirmPasswordField);
+        fieldsPanel.add(Box.createVerticalStrut(20));
+
+        // Create Account button
+        JButton createButton = new JButton("Create Account");
+        createButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        createButton.setBackground(new Color(70, 70, 70));
+        createButton.setForeground(Color.WHITE);
+        createButton.setFocusPainted(false);
+
+        fieldsPanel.add(createButton);
+
+        // Validation logic for account creation
+        createButton.addActionListener(e -> {
+            String name = nameField.getText();
+            String email = emailField.getText();
+            String password = new String(passwordField.getPassword());
+            String confirmPassword = new String(confirmPasswordField.getPassword());
+
+            // Perform validation checks
+            if (!isValidName(name)) {
+                JOptionPane.showMessageDialog(accountFrame, "Invalid Name: Only letters are allowed.");
+            } else if (!isValidEmail(email)) {
+                JOptionPane.showMessageDialog(accountFrame, "Invalid Email Format.");
+            } else if (!isValidPassword(password)) {
+                JOptionPane.showMessageDialog(accountFrame, "Invalid Password: Password must be at least 8 characters, include a number, a special character, and an uppercase letter.");
+            } else if (!password.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(accountFrame, "Passwords do not match.");
+            } else if (users.containsKey(email)) {
+                JOptionPane.showMessageDialog(accountFrame, "An account with this email already exists.");
+            } else {
+                users.put(email, new UserAccount(name, email, password));  // Store UserAccount object
+                JOptionPane.showMessageDialog(accountFrame, "Account created successfully!");
+                accountFrame.dispose();
+            }
+        });
+
+        accountFrame.add(headerPanel, BorderLayout.NORTH);
+        accountFrame.add(fieldsPanel, BorderLayout.CENTER);
+        accountFrame.setVisible(true);
+    }
+
+    private boolean isValidName(String name) {
+        // Name should not be empty and should only contain letters
+        return name != null && name.matches("[a-zA-Z]+");
+    }
+
+    private boolean isValidEmail(String email) {
+        // Basic email format validation using regex
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
+    }
+
+    private boolean isValidPassword(String password) {
+        // Password should be at least 8 characters long and contain a mix of letters, numbers, and special characters
+        if (password.length() < 8) {
+            return false;
+        }
+        boolean hasUppercase = !password.equals(password.toLowerCase());
+        boolean hasLowercase = !password.equals(password.toUpperCase());
+        boolean hasDigit = password.matches(".*\\d.*");
+        boolean hasSpecialChar = password.matches(".*[!@#$%^&*()-+=].*");
+
+        return hasUppercase && hasLowercase && hasDigit && hasSpecialChar;
+    }
+
+    // Simulate Accessing Account Page after login
+    private void accessAccount(UserAccount account) {
+        JFrame accountFrame = new JFrame("Welcome " + account.getName());
+        accountFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        accountFrame.setSize(350, 300);
+
+        JLabel welcomeLabel = new JLabel("Welcome, " + account.getName() + "!");
+        welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        accountFrame.add(welcomeLabel, BorderLayout.CENTER);
+        accountFrame.setVisible(true);
+    }
+
+    // Validation methods omitted for brevity (same as in previous version)
+
+    // Action listener for login
+    private class LoginAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String email = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+
+            if (users.containsKey(email) && users.get(email).getPassword().equals(password)) {
+                // Access user's account page
+                accessAccount(users.get(email));
+            } else {
+                JOptionPane.showMessageDialog(frame, "Invalid email or password.");
+            }
+        }
+    }
+}
