@@ -1,3 +1,4 @@
+// Khanh Van | kxv230013 | Shopping List Class - Main driver for Shopping List function that generate a Shopping List based on Low Inventory Items
 import java.util.ArrayList;
 import java.util.Scanner;
 
