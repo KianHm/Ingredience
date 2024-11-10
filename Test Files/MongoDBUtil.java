@@ -44,13 +44,13 @@ public class MongoDBUtil {
 	// This Collection will include the UserID - Primary Key 
 	// Include item name, categories, expr dates, threshold, quantity
 	public static MongoCollection<Document>	getItemCollection(){
-		return database.getCollection("Item");
+		return database.getCollection("item");
 	}
 	
 	// This will return the Collection for User
 	// THis Collection will contains User log in information and their dietary restrictions
 	public static MongoCollection<Document> getUserCollection(){
-		return database.getCollection("User");
+		return database.getCollection("users");
 	}
 	
 	// Shutting down the Database Connection
